@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Spatie\RouteDiscovery\Attributes\DoNotDiscover;

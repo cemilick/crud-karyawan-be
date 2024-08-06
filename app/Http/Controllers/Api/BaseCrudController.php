@@ -13,7 +13,6 @@ use Spatie\RouteDiscovery\Attributes\Route;
 #[DoNotDiscover]
 class BaseCrudController extends BaseController
 {
-    use HasFactory;
     protected BaseModel $model;
 
     #[DoNotDiscover]

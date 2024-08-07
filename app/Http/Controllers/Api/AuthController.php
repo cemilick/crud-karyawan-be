@@ -59,7 +59,7 @@ class AuthController extends BaseController
         return $this->sendResponse($success, 'Profile data return successfully.');
     }
 
-
+    #[Route(method: 'POST')]
     public function logout()
     {
         auth()->logout();

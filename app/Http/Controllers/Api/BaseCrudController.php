@@ -21,9 +21,15 @@ class BaseCrudController extends BaseController
         $this->model = new $this->class;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $data = $this->model->all();
+        $page = $request->input('page', 1);
+
+        $query = $this->model->query();
+        $query = $this->applyFilterable($query, $request);
+
+        $data = $query->orderByDesc('updated_at')->paginate(10, ['*'], 'page', $page);
+
 
         return $this->sendResponse($data, 'Data return successfully.');
     }
@@ -43,7 +49,7 @@ class BaseCrudController extends BaseController
 
     }
 
-    #[Route(method: ['PUT', 'POST'])]
+    #[Route(uri: '{id}', method: ['PUT', 'POST'])]
     public function update($id, Request $request)
     {
         $model = $this->model->find($id);
@@ -57,6 +63,7 @@ class BaseCrudController extends BaseController
         return $this->sendResponse($model, 'Data updated successfully.');
     }
 
+    #[Route(uri: '{id}', method: 'DELETE')]
     public function delete($id)
     {
         $model = $this->model->find($id);
@@ -99,5 +106,18 @@ class BaseCrudController extends BaseController
     protected function transformRequestData(Request $request)
     {
         return Arr::only($request->all(), $this->model->getFillable());
+    }
+
+    protected function applyFilterable($query, $request)
+    {
+        $filterable = $this->model->getFilterable();
+
+        foreach ($filterable as $value) {
+            if ($request->has($value)) {
+                $query->whereRaw("$value::text ilike ?", ["%{$request->get($value)}%"]);
+            }
+        }
+
+        return $query;
     }
 }

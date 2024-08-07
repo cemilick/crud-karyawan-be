@@ -14,6 +14,8 @@ class BaseModel extends Model
 
     protected $fillable = [];
 
+    protected $filterable = [];
+
     public function rules(): array
     {
         return $this->rules;
@@ -22,5 +24,10 @@ class BaseModel extends Model
     public function getFillable(): array
     {
         return $this->fillable;
+    }
+
+    public function getFilterable(): array
+    {
+        return $this->filterable;
     }
 }

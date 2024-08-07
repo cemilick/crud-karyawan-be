@@ -19,7 +19,14 @@ class Karyawan extends BaseModel
         'address',
         'phone',
         'job_id',
-        'division_id'
+        'division_id',
+        'is_active'
+    ];
+
+    protected $filterable = [
+        'name',
+        'division_id',
+        'job_id',
     ];
 
     protected $with = ['job', 'division'];
